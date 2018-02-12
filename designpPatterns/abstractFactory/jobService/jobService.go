@@ -20,19 +20,25 @@ type AbstractCreateJobRequest struct {
 	JobType string `json:"jobType"`
 }
 
-type CreateJobRequest struct {
+type ReportCreateJobRequest struct {
 	AbstractCreateJobRequest
 	Email string
 	CampaignId string
+}
+
+type AudienceCreateJobRequest struct {
+	AbstractCreateJobRequest
+	Email string
+	FilterData string
 }
 
 func (a AbstractCreateJobRequest) GetJobType() string {
 	return a.JobType
 }
 
-func (c CreateJobRequest) GetJobType() string {
-	return c.JobType
-}
+//func (c AudienceCreateJobRequest) GetJobType() string {
+//	return c.JobType
+//}
 
 func (m JobServiceImpl) Post(req ICreateJobRequest) {
 
