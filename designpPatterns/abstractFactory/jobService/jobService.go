@@ -49,3 +49,8 @@ func (m JobServiceImpl) Post(req ICreateJobRequest) {
 	//	fmt.Println("Invalid data type")
 	//}
 }
+
+func (m JobServiceImpl) insertIntoDatabase(req ICreateJobRequest) {
+
+	fmt.Println("inserting into the databse "+m.DB)
+}

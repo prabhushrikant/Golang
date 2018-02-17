@@ -3,10 +3,12 @@ package audienceDownloadService
 import (
 	js "stash.experticity.com/go/TestProject_Golang/designpPatterns/abstractFactory/jobService"
 	"fmt"
+	"errors"
 )
 
 type AudienceDownloadService interface {
 	js.JobService
+	convertCreateRequest(req js.ICreateJobRequest) (*js.AudienceCreateJobRequest, error)
 }
 
 //composition (Has-a Relationship than Is-A relationship like in Java)
@@ -24,10 +26,20 @@ func MakeService(DB string) AudienceDownloadService {
 	}
 }
 
+
 func (r AudienceDownloadServiceImpl) Post(req js.ICreateJobRequest) {
+	newReq, err := r.convertCreateRequest(req)
+	if err != nil {
+		fmt.Println("err - ",err)
+	}
+	r.jobServiceImpl.Post(*newReq)
+}
+
+func (s AudienceDownloadServiceImpl) convertCreateRequest(req js.ICreateJobRequest) (*js.AudienceCreateJobRequest, error) {
+	//type assertion
 	newReq, ok := req.(js.AudienceCreateJobRequest)
 	if ok != true {
-		fmt.Println("Type conversion error")
+		return nil, errors.New("Invalid type specified")
 	}
-	r.jobServiceImpl.Post(newReq)
+	return &newReq, nil
 }
